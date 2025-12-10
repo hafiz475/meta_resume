@@ -1,3 +1,5 @@
+//src/components/HUD.jsx
+
 import React from 'react';
 import { sections } from '../data/sections';
 

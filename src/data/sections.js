@@ -1,3 +1,5 @@
+//src/data/sections.js
+
 export const sections = [
     {
         key: 'hero',
