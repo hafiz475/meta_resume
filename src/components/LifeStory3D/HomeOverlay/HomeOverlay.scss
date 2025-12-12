@@ -1,0 +1,39 @@
+//src/components/LifeStory3D/HomeOverlay/HomeOverlay.scss
+
+.home-overlay {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    right: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.home-overlay .left,
+.home-overlay .center,
+.home-overlay .right {
+    pointer-events: all;
+}
+
+.home-btn {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    padding: 8px 12px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(12, 16, 24, 0.06);
+    font-weight: 600;
+}
+
+.small-hint {
+    color: rgba(15, 23, 42, 0.6);
+    font-size: 13px;
+}
+
+.active-label {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(15, 23, 42, 0.03)
+}
