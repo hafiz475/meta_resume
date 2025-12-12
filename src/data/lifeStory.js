@@ -1,73 +1,96 @@
-// src/data/lifeStory.js
-import footballAnim from "../lotties/football.json";
-import factoryAnim from "../lotties/factory.json";
-import robotAnim from "../lotties/robot.json";
-import reactAnim from "../lotties/react.json";
-import whatsappAnim from "../lotties/whatsapp.json";
-import heartAnim from "../lotties/heart.json";
+//src/data/lifeStory.js
 
-/**
- * lifeStory array:
- * - key: unique id
- * - title, subtitle, body: text shown as 3D text
- * - position: [x,y,z]  -> tweak these if nodes overlap
- * - icon: Lottie animation JSON import
- *
- * If you don't have the Lottie files yet, remove the `icon` property from each object.
- */
 export const lifeStory = [
     {
-        key: "intro",
-        title: "My Life Story",
-        subtitle: "From Screwing Bikes Together to Screwing Up Code",
-        body:
-            "I’m J Md Hafizur Rahman — born 10 Sep 1997. Grew up where filter coffee meets sea breeze. Childhood dream: footballer. District-level striker with a patched jersey and big dreams.",
-        position: [-2.6, 1.6, -2.6],
-        icon: footballAnim,
+        id: "intro",
+        title: "My Life Story: From Screwing Bikes Together to Screwing Up Code",
+        subtitle: "Born to Kick Balls, Ended Up Kicking Bugs",
+        icon: "/assets/lotties/football.json",
+        position: [1.2, 0.25, -1.8],
+        rotation: [0, 0.55, 0],
+        text: `
+I’m J Md Hafizur Rahman, born 10 September 1997 in a part of India that smells like filter coffee and sea breeze.
+Childhood dream? Footballer.
+District-level player — basically the Messi of my small town, except nobody paid me and my jersey had more holes than cloth.
+Life had other ideas, and football slowly turned into debugging.
+    `
     },
+
     {
-        key: "mechanical",
+        id: "mech",
         title: "Mechanical Engineer",
-        subtitle: "Royal Enfield — Kaizen & assembly",
-        body:
-            "B.E. in Mechanical Engineering (Robotics & Mechatronics). Joined Royal Enfield as Kaizen Coordinator / Supervisor, working on assembly KPIs and process improvements.",
-        position: [-0.8, 0.9, -2.1],
-        icon: factoryAnim,
+        subtitle: "Royal Enfield — Kaizen, Torque & 2,000 Bullets a Day",
+        icon: "/assets/lotties/factory.json",
+        position: [-1.4, 0.45, -1.2],
+        rotation: [0, 1.72, 0],
+        text: `
+Studied B.E. Mechanical Engineering specializing in Robotics & Mechatronics.
+Joined Royal Enfield as Kaizen Coordinator & Vehicle Assembly Supervisor.
+Daily job: manage 500 engineers, monitor KPIs, ensure 2,000 bullets roll out perfectly,
+and shout “Torque it properly, macha!” at least 17 times per shift.
+    `
     },
+
     {
-        key: "industry4",
+        id: "i4",
         title: "Industry 4.0 Wakeup",
-        subtitle: "Robots, connectivity, and a pivot",
-        body:
-            "Robots and automation showed me the digital future. During a night shift I decided to switch to software — computers, not safety shoes.",
-        position: [1.0, 0.6, -1.9],
-        icon: robotAnim,
+        subtitle: "When Robots Started Listening to the Internet",
+        icon: "/assets/lotties/robot.json",
+        position: [-2.1, 0.75, 0.4],
+        rotation: [0, 2.72, 0],
+        text: `
+Factory shifted into robotics, IoT dashboards, remote-controlled systems.
+My mechanical degree suddenly felt vintage.
+One night mid-shift I watched robots being configured through an internet dashboard.
+For the first time I thought:
+"Damn… computers are taking over. Maybe I should too."
+    `
     },
+
     {
-        key: "pivot",
+        id: "pivot",
         title: "The Great Pivot",
-        subtitle: "From spanners to semicolons",
-        body:
-            "A friend pulled me into a React internship. I learned HTML/CSS the hard way, then joined Nippon Paint to move billing from paper to tablets.",
-        position: [2.6, 0.5, -2.3],
-        icon: reactAnim,
+        subtitle: "From Spanners to Semicolons",
+        icon: "/assets/lotties/react.json",
+        position: [-0.6, 1.05, 2.0],
+        rotation: [0, 4.05, 0],
+        text: `
+Zero computer science background.
+Got dragged into a React JS internship by my school friend Isswariya.
+First month felt like punishment for skipping HTML in 10th standard.
+Two months later — hired by Nippon Paint for their digital billing transformation project.
+Small team. Big learning. Too much pani puri.
+    `
     },
+
     {
-        key: "bizmagnets",
-        title: "WhatsApp Wizard",
-        subtitle: "Building a CRM at Bizmagnets",
-        body:
-            "Now at Bizmagnets building WhatsApp Business CRM: chatbots, ticketing, automation. Stack: React (frontend), Node.js/Express + MongoDB (backend).",
-        position: [1.6, -0.8, -2.8],
-        icon: whatsappAnim,
+        id: "biz",
+        title: "WhatsApp Wizard — Bizmagnets",
+        subtitle: "From Torque Specs to 3 AM Debugging",
+        icon: "/assets/lotties/whatsapp.json",
+        position: [1.5, 1.3, 1.4],
+        rotation: [0, 5.0, 0],
+        text: `
+Two years at Bizmagnets building a complete WhatsApp Business CRM:
+chatbots, ticketing, team inboxes, automation flows.
+Tech: React JS, Node.js, Express, MongoDB.
+From tightening bolts at 72 Nm to tightening bugs at 3 a.m. with Red Bull.
+    `
     },
+
     {
-        key: "why",
+        id: "care",
         title: "Why I Care",
-        subtitle: "Systems thinking + front-end craft",
-        body:
-            "I combine manufacturing discipline with front-end craft — break things, find root cause, and ship reliable UX. Also available for football banter over coffee.",
-        position: [-1.4, -1.0, -2.9],
-        icon: heartAnim,
-    },
+        subtitle: "Systems Thinking with a Front-End Heart",
+        icon: "/assets/lotties/heart.json",
+        position: [2.3, 1.6, -0.2],
+        rotation: [0, 5.9, 0],
+        text: `
+Mechanical engineering taught me discipline & process.
+Coding taught me creativity & problem solving.
+I like breaking things, understanding why they broke,
+and rebuilding them clean and strong.
+Also yes — I still talk about football tactics over coffee.
+    `
+    }
 ];
