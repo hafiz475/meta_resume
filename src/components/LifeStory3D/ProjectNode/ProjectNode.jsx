@@ -6,7 +6,10 @@ import * as THREE from "three";
 export default function ProjectNode({ project, active = false, onSelect = () => { } }) {
     let logoTexture = null;
     try {
-        if (project.logo) logoTexture = useLoader(THREE.TextureLoader, project.logo);
+        if (project.logo) {
+            // expects public path: /assets/logos/yourlogo.png
+            logoTexture = useLoader(THREE.TextureLoader, project.logo);
+        }
     } catch (e) {
         logoTexture = null;
     }
@@ -14,20 +17,20 @@ export default function ProjectNode({ project, active = false, onSelect = () => 
     return (
         <group position={project.position} rotation={project.rotation} onClick={() => onSelect(project.id)} name={`project-${project.id}`}>
             <mesh>
-                <sphereGeometry args={[0.58, 32, 32]} />
-                <meshStandardMaterial color={active ? "#ffffff" : "#fbfdff"} metalness={0.06} roughness={0.08} />
+                <sphereGeometry args={[0.42, 32, 32]} />
+                <meshStandardMaterial color={active ? "#ffffff" : "#fbfdff"} metalness={0.04} roughness={0.08} />
             </mesh>
 
-            <group position={[0, 0.6, 0]}>
+            <group position={[0, 0.46, 0]}>
                 <mesh>
-                    <planeGeometry args={[0.9, 0.42]} />
-                    <meshStandardMaterial map={logoTexture} transparent opacity={logoTexture ? 1 : 0.85} color={logoTexture ? undefined : "#f3f4f6"} />
+                    <planeGeometry args={[0.7, 0.32]} />
+                    <meshStandardMaterial map={logoTexture} transparent opacity={logoTexture ? 1 : 0.9} color={logoTexture ? undefined : "#f3f4f6"} />
                 </mesh>
             </group>
 
-            <group position={[0, -0.9, 0]}>
+            <group position={[0, -0.65, 0]}>
                 <mesh position={[0, 0, 0]}>
-                    <boxGeometry args={[1.06, 0.28, 0.02]} />
+                    <boxGeometry args={[0.86, 0.22, 0.02]} />
                     <meshStandardMaterial color={"#fbfdff"} metalness={0.02} roughness={0.06} />
                 </mesh>
             </group>

@@ -1,15 +1,33 @@
 // src/data/techStack.js
+import javascript from "../assets/lotties/javascript.json";
+import typescript from "../assets/lotties/typescript.json";
+import reactLottie from "../assets/lotties/react.json";
+
+import node from "../assets/lotties/node.json";
+import express from "../assets/lotties/express.json";
+import mongodb from "../assets/lotties/mongodb.json";
+import firebase from "../assets/lotties/firebase.json";
+
+import aws from "../assets/lotties/aws.json";
+import cloudflare from "../assets/lotties/cloudflare.json";
+import digitalocean from "../assets/lotties/digitalocean.json";
+
+/**
+ * techStack
+ * - icon: use public asset URL (e.g. /assets/logos/react.svg) for texture/HTML fallback
+ * - lottie: imported JSON for Lottie playback
+ */
 export const techStack = [
-    { id: "javascript", name: "JavaScript", icon: "/assets/logos/javascript.svg", lottie: "/assets/lotties/javascript.json", orbit: { radius: 1.8, speed: 1.2, height: 0.3 } },
-    { id: "typescript", name: "TypeScript", icon: "/assets/logos/typescript.svg", lottie: "/assets/lotties/typescript.json", orbit: { radius: 1.8, speed: 1.1, height: 0.35 } },
-    { id: "react", name: "React", icon: "/assets/logos/react.svg", lottie: "/assets/lotties/react.json", orbit: { radius: 1.8, speed: 1.25, height: 0.25 } },
+    { id: "javascript", name: "JavaScript", icon: "/assets/logos/javascript.svg", lottie: javascript, orbit: { radius: 1.8, speed: 1.2, height: 0.3 } },
+    { id: "typescript", name: "TypeScript", icon: "/assets/logos/typescript.svg", lottie: typescript, orbit: { radius: 1.8, speed: 1.1, height: 0.35 } },
+    { id: "react", name: "React", icon: "/assets/logos/react.svg", lottie: reactLottie, orbit: { radius: 1.8, speed: 1.25, height: 0.25 } },
 
-    { id: "node", name: "Node.js", icon: "/assets/logos/node.svg", lottie: "/assets/lotties/node.json", orbit: { radius: 2.4, speed: 0.8, height: 0.6 } },
-    { id: "express", name: "Express", icon: "/assets/logos/express.svg", lottie: "/assets/lotties/express.json", orbit: { radius: 2.4, speed: 0.75, height: 0.55 } },
-    { id: "mongodb", name: "MongoDB", icon: "/assets/logos/mongo.svg", lottie: "/assets/lotties/mongodb.json", orbit: { radius: 2.4, speed: 0.82, height: 0.65 } },
-    { id: "firebase", name: "Firebase", icon: "/assets/logos/firebase.svg", lottie: "/assets/lotties/firebase.json", orbit: { radius: 2.4, speed: 0.78, height: 0.7 } },
+    { id: "node", name: "Node.js", icon: "/assets/logos/node.svg", lottie: node, orbit: { radius: 2.4, speed: 0.8, height: 0.6 } },
+    { id: "express", name: "Express", icon: "/assets/logos/express.svg", lottie: express, orbit: { radius: 2.4, speed: 0.75, height: 0.55 } },
+    { id: "mongodb", name: "MongoDB", icon: "/assets/logos/mongo.svg", lottie: mongodb, orbit: { radius: 2.4, speed: 0.82, height: 0.65 } },
+    { id: "firebase", name: "Firebase", icon: "/assets/logos/firebase.svg", lottie: firebase, orbit: { radius: 2.4, speed: 0.78, height: 0.7 } },
 
-    { id: "aws", name: "AWS / S3", icon: "/assets/logos/aws.svg", lottie: "/assets/lotties/aws.json", orbit: { radius: 3.2, speed: 0.4, height: 1.0 } },
-    { id: "cloudflare", name: "Cloudflare", icon: "/assets/logos/cloudflare.svg", lottie: "/assets/lotties/cloudflare.json", orbit: { radius: 3.2, speed: 0.45, height: 1.1 } },
-    { id: "digitalocean", name: "DigitalOcean", icon: "/assets/logos/digitalocean.svg", lottie: "/assets/lotties/digitalocean.json", orbit: { radius: 3.2, speed: 0.38, height: 1.2 } }
+    { id: "aws", name: "AWS / S3", icon: "/assets/logos/aws.svg", lottie: aws, orbit: { radius: 3.2, speed: 0.4, height: 1.0 } },
+    { id: "cloudflare", name: "Cloudflare", icon: "/assets/logos/cloudflare.svg", lottie: cloudflare, orbit: { radius: 3.2, speed: 0.45, height: 1.1 } },
+    { id: "digitalocean", name: "DigitalOcean", icon: "/assets/logos/digitalocean.svg", lottie: digitalocean, orbit: { radius: 3.2, speed: 0.38, height: 1.2 } }
 ];

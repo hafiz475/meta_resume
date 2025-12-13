@@ -9,7 +9,7 @@ export default function TechNode({ tech, angle = 0, radius = 2.4, height = 0.6, 
     return (
         <group position={[x, y, z]} onClick={() => onSelect(tech.id)}>
             <mesh>
-                <sphereGeometry args={[0.18, 16, 16]} />
+                <sphereGeometry args={[0.12, 12, 12]} />
                 <meshStandardMaterial color={"#eef2ff"} metalness={0.02} roughness={0.06} />
             </mesh>
         </group>
