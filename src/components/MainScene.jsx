@@ -6,6 +6,7 @@ import { Sky, OrbitControls } from '@react-three/drei';
 import Plane from './Plane';
 import Clouds from './Clouds';
 import CloudGLB from './CloudGLB';
+import CloudStream from './CloudStream';
 
 export default function MainScene() {
   return (
@@ -29,8 +30,7 @@ export default function MainScene() {
 
       <Suspense fallback={null}>
         {/* Clouds placed behind plane (z negative) */}
-        <CloudGLB count={26} />
-
+        <CloudStream maxClouds={24} />
         {/* Centered, small plane */}
         <Plane />
 
