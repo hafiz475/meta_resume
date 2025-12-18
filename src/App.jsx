@@ -1,6 +1,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import './styles/main.scss';
 import MainScene from './components/MainScene';
+import Overlay from './components/Overlay';
 
 function App() {
   const [section, setSection] = useState(0);
@@ -28,6 +29,7 @@ function App() {
 
   return (
     <div className="app-container">
+      <Overlay section={section} />
       <Suspense fallback={null}>
         <MainScene section={section} />
       </Suspense>

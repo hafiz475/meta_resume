@@ -1,16 +1,54 @@
 // src/components/MainScene.jsx
-import { Canvas } from '@react-three/fiber';
-import { Suspense } from 'react';
-import { Sky, OrbitControls } from '@react-three/drei';
+import { Canvas, useThree } from '@react-three/fiber';
+import { Suspense, useEffect, useRef } from 'react';
+import { Sky } from '@react-three/drei';
+import gsap from 'gsap';
 
 import Plane from './Plane';
-import Clouds from './Clouds';
-import CloudGLB from './CloudGLB';
+// import Clouds from './Clouds';
+// import CloudGLB from './CloudGLB';
 import CloudStream from './CloudStream';
 
-export default function MainScene() {
+function SceneContent({ section }) {
+  const { camera, size } = useThree();
+  const isMobile = size.width < 768;
+
+  useEffect(() => {
+    // Initial Camera Intro Animation (3 seconds)
+    // Setup initial position (e.g., lower and centered)
+    camera.position.set(0, -2, 8);
+
+    const tl = gsap.timeline();
+
+    // Animation 1: Move Up (5s)
+    tl.to(camera.position, {
+      y: 1.5,
+      z: 6,
+      duration: 5,
+      ease: "power1.inOut"
+    });
+
+    // Animation 2: Move Right slightly (5s)
+    tl.to(camera.position, {
+      x: 2,
+      duration: 5,
+      ease: "power1.inOut"
+    });
+
+  }, [camera]);
+
+  // Responsive adjustments for the plane or camera based on aspect ratio
+  useEffect(() => {
+    if (isMobile) {
+      camera.fov = 60;
+    } else {
+      camera.fov = 45;
+    }
+    camera.updateProjectionMatrix();
+  }, [isMobile, camera]);
+
   return (
-    <Canvas camera={{ position: [0, 1.5, 6], fov: 45 }}>
+    <>
       {/* nice sky gradient */}
       <Sky
         distance={450000}
@@ -33,10 +71,15 @@ export default function MainScene() {
         <CloudStream maxClouds={24} />
         {/* Centered, small plane */}
         <Plane />
-
       </Suspense>
+    </>
+  );
+}
 
-      <OrbitControls enablePan={false} enableZoom={false} />
+export default function MainScene({ section }) {
+  return (
+    <Canvas camera={{ position: [0, 1.5, 6], fov: 45 }}>
+      <SceneContent section={section} />
     </Canvas>
   );
 }
