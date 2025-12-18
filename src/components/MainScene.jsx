@@ -8,6 +8,7 @@ import Plane from './Plane';
 // import Clouds from './Clouds';
 // import CloudGLB from './CloudGLB';
 import CloudStream from './CloudStream';
+import HudText from './HudText';
 
 function SceneContent({ section }) {
   const { camera, size } = useThree();
@@ -71,6 +72,7 @@ function SceneContent({ section }) {
         <CloudStream maxClouds={24} />
         {/* Centered, small plane */}
         <Plane />
+        <HudText />
       </Suspense>
     </>
   );

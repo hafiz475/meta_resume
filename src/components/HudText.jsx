@@ -1,0 +1,122 @@
+import React, { useRef, useState, useEffect } from 'react';
+import { useThree, useFrame } from '@react-three/fiber';
+import { Text } from '@react-three/drei';
+import * as THREE from 'three';
+
+// Local Font Path (served from public/assets/fonts)
+const CAVEAT_URL = "/assets/fonts/Caveat-Regular.ttf";
+
+export default function HudText() {
+    const { camera, size } = useThree();
+    const groupRef = useRef();
+
+    // Animation State
+    // 0 = Hidden (Below), 1 = Visible (In Position)
+    const animState = useRef(0);
+    const [startAnim, setStartAnim] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setStartAnim(true);
+        }, 8000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    useFrame((state, delta) => {
+        if (!groupRef.current) return;
+
+        // Animate the state value from 0 to 1
+        if (startAnim && animState.current < 1) {
+            animState.current += delta * 0.5; // Slide up over ~2 seconds
+            if (animState.current > 1) animState.current = 1;
+        }
+
+        // --- HUD LOCKING LOGIC ---
+        // Lock rotation/position base to camera
+        groupRef.current.position.copy(camera.position);
+        groupRef.current.quaternion.copy(camera.quaternion);
+
+        // --- POSITION INTERPOLATION ---
+
+        // Target (Visible) Offset: Right, Down, Forward
+        const targetX = 1.2;
+        const targetY = -0.6;
+        const targetZ = -3;
+
+        // Start (Hidden) Offset: Lower down
+        const startY = -2.0;
+
+        // Current Y based on animation state (Smooth Ease Out)
+        // t is 0..1
+        const t = animState.current;
+        const easeT = 1 - Math.pow(1 - t, 3); // Cubic ease out
+
+        const currentY = THREE.MathUtils.lerp(startY, targetY, easeT);
+
+        // Apply offsets in Local Space
+        groupRef.current.translateX(targetX);
+        groupRef.current.translateY(currentY); // Animate Y
+        groupRef.current.translateZ(targetZ);
+
+        // Mobile Adjustments
+        if (size.width < 768) {
+            groupRef.current.translateZ(-5);
+            groupRef.current.translateX(-0.3);
+        }
+    });
+
+    // Shared TextProps for consistency
+    const textProps = {
+        font: CAVEAT_URL,
+        fontSize: 0.25,
+        lineHeight: 1,
+        letterSpacing: 0.02,
+        extrusion: 0.02, // 3D Depth
+        anchorX: "left",
+        anchorY: "middle",
+    };
+
+    return (
+        <group ref={groupRef}>
+            {/* J Md (Cloud White) */}
+            <Text
+                {...textProps}
+                position={[-1.4, 0.1, 0]}
+            >
+                J Md
+                <meshStandardMaterial
+                    color="#ecf0f1"
+                    roughness={0.6}
+                    metalness={0.1}
+                />
+            </Text>
+
+            {/* Hafizur (Darker Grey/Blue Cloud) */}
+            <Text
+                {...textProps}
+                fontSize={0.3} // Slightly bigger
+                position={[-0.8, 0.08, 0]}
+            >
+                Hafizur
+                <meshStandardMaterial
+                    color="#bdc3c7" // Grey Cloud
+                    roughness={0.5}
+                    metalness={0.2}
+                />
+            </Text>
+
+            {/* Rahman (Cloud White) */}
+            <Text
+                {...textProps}
+                position={[0.2, 0, 0]}
+            >
+                Rahman
+                <meshStandardMaterial
+                    color="#ecf0f1"
+                    roughness={0.6}
+                    metalness={0.1}
+                />
+            </Text>
+        </group>
+    );
+}
