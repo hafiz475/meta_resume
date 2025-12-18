@@ -29,9 +29,9 @@ function SceneContent({ section }) {
       ease: "power1.inOut"
     });
 
-    // Animation 2: Move Right slightly (5s)
+    // Animation 2: Move Right slightly (5s) - ONLY ON DESKTOP
     tl.to(camera.position, {
-      x: 2,
+      x: isMobile ? 0 : 2,
       duration: 5,
       ease: "power1.inOut"
     });

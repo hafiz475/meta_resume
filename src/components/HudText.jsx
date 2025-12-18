@@ -38,13 +38,20 @@ export default function HudText() {
 
         // --- POSITION INTERPOLATION ---
 
-        // Target (Visible) Offset: Right, Down, Forward
-        const targetX = 1.2;
-        const targetY = -0.6;
-        const targetZ = -3;
+        // Target (Visible) Offset
+        let targetX = 1.2;
+        let targetY = -0.6;
+        let targetZ = -3;
+
+        // Mobile Adjustments: Center and Below Plane
+        if (size.width < 768) {
+            targetX = 0.2;   // Center horizontally (Offset for text alignment)
+            targetY = -1.8; // Lower down (below plane)
+            targetZ = -5;  // Push back slightly
+        }
 
         // Start (Hidden) Offset: Lower down
-        const startY = -2.0;
+        const startY = -4.0;
 
         // Current Y based on animation state (Smooth Ease Out)
         // t is 0..1
@@ -57,12 +64,6 @@ export default function HudText() {
         groupRef.current.translateX(targetX);
         groupRef.current.translateY(currentY); // Animate Y
         groupRef.current.translateZ(targetZ);
-
-        // Mobile Adjustments
-        if (size.width < 768) {
-            groupRef.current.translateZ(-5);
-            groupRef.current.translateX(-0.3);
-        }
     });
 
     // Shared TextProps for consistency
@@ -78,6 +79,19 @@ export default function HudText() {
 
     return (
         <group ref={groupRef}>
+            {/* I'm */}
+            <Text
+                {...textProps}
+                position={[-1.4, 0.35, 0]}
+            >
+                I'm
+                <meshStandardMaterial
+                    color="#ecf0f1"
+                    roughness={0.6}
+                    metalness={0.1}
+                />
+            </Text>
+
             {/* J Md (Cloud White) */}
             <Text
                 {...textProps}
