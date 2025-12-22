@@ -22,14 +22,39 @@ export default function StoryText3D({ isStoryDone }) {
         return () => clearTimeout(timer);
     }, []);
 
+    // Opacity Refs for Cross-fade
+    const storyOpacity = useRef(1);
+    const hiOpacity = useRef(0);
+
+    // Material Refs
+    const storyMat1 = useRef();
+    const storyMat2 = useRef();
+    const storyMat3 = useRef();
+    const hiMat = useRef();
+
     useFrame((state, delta) => {
         if (!groupRef.current) return;
 
-        // Animate the state value from 0 to 1
+        // Animate the state value from 0 to 1 (Initial Scale/Move In)
         if (startAnim && animState.current < 1) {
-            animState.current += delta * 0.4; // Fade in
+            animState.current += delta * 0.4;
             if (animState.current > 1) animState.current = 1;
         }
+
+        // --- CROSS FADE LOGIC ---
+        // Target Opacities
+        const storyTarget = isStoryDone ? 0 : 1;
+        const hiTarget = isStoryDone ? 1 : 0;
+
+        // Lerp opacity values (Smooth fade over ~1.5s)
+        storyOpacity.current = THREE.MathUtils.lerp(storyOpacity.current, storyTarget, delta * 2);
+        hiOpacity.current = THREE.MathUtils.lerp(hiOpacity.current, hiTarget, delta * 2);
+
+        // Apply to Materials
+        if (storyMat1.current) storyMat1.current.opacity = storyOpacity.current;
+        if (storyMat2.current) storyMat2.current.opacity = storyOpacity.current;
+        if (storyMat3.current) storyMat3.current.opacity = storyOpacity.current;
+        if (hiMat.current) hiMat.current.opacity = hiOpacity.current;
 
         // Lock to camera for HUD-like behavior
         groupRef.current.position.copy(camera.position);
@@ -75,29 +100,29 @@ export default function StoryText3D({ isStoryDone }) {
             {/* Light to illuminate the text */}
             <pointLight position={[0, 1, 2]} intensity={2} distance={5} decay={2} color="#ffffff" />
 
-            {!isStoryDone ? (
-                // --- PHASE 1: STORY ---
-                <group position={[0, 0, 0]}> {/* Local offsets relative to the HudText group position */}
-                    <Text {...textProps} fontSize={0.22} position={[0, 0.4, 0]}>
-                        From Torque to TypeScript
-                        <meshStandardMaterial color="#ffffff" roughness={0.5} metalness={0.2} />
-                    </Text>
-                    <Text {...textProps} position={[0, 0.1, 0]}>
-                        Started as a Mechanical Engineer at Royal Enfield
-                        <meshStandardMaterial color="#ffffff" roughness={0.6} metalness={0.1} />
-                    </Text>
-                    <Text {...textProps} position={[0, -0.1, 0]}>
-                        Now crafting WhatsApp CRM tools at Bizmagnets
-                        <meshStandardMaterial color="#ffffff" roughness={0.6} metalness={0.1} />
-                    </Text>
-                </group>
-            ) : (
-                // --- PHASE 2: HI ---
+            {/* --- PHASE 1: STORY --- */}
+            <group position={[0, 0, 0]}>
+                <Text {...textProps} fontSize={0.22} position={[0, 0.4, 0]}>
+                    From Torque to TypeScript
+                    <meshStandardMaterial ref={storyMat1} transparent color="#ffffff" roughness={0.5} metalness={0.2} />
+                </Text>
+                <Text {...textProps} position={[0, 0.1, 0]}>
+                    Started as a Mechanical Engineer at Royal Enfield
+                    <meshStandardMaterial ref={storyMat2} transparent color="#ffffff" roughness={0.6} metalness={0.1} />
+                </Text>
+                <Text {...textProps} position={[0, -0.1, 0]}>
+                    Now crafting WhatsApp CRM tools at Bizmagnets
+                    <meshStandardMaterial ref={storyMat3} transparent color="#ffffff" roughness={0.6} metalness={0.1} />
+                </Text>
+            </group>
+
+            {/* --- PHASE 2: HI --- */}
+            <group position={[0, 0, 0]}>
                 <Text font={CAVEAT_URL} fontSize={0.5} position={[0, 0, 0]} anchorX="center" anchorY="middle">
                     Hi!
-                    <meshStandardMaterial color="#ffffff" roughness={0.5} metalness={0.2} />
+                    <meshStandardMaterial ref={hiMat} transparent opacity={0} color="#ffffff" roughness={0.5} metalness={0.2} />
                 </Text>
-            )}
+            </group>
         </group>
     );
 }

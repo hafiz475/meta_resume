@@ -75,20 +75,45 @@ function SceneContent({ section, onRainStart, isLanding, isStoryDone }) {
     }
   }, [isLanding, camera]);
 
-  // Start rain after 12 seconds automatically, stop after 15s duration
+  // Thunder Loop (Section 0 only)
   useEffect(() => {
+    if (section !== 0) return;
+
+    let intervalId;
+    // First thunder at 3s
+    const firstTimer = setTimeout(() => {
+      triggerThunder();
+      // Then repeats every 6s (3+6=9, 9+6=15...)
+      intervalId = setInterval(triggerThunder, 6000);
+    }, 3000);
+
+    return () => {
+      clearTimeout(firstTimer);
+      clearInterval(intervalId);
+    };
+  }, [section]);
+
+  // Rain Logic - Only automatic in Section 0
+  useEffect(() => {
+    if (section !== 0) {
+      setIsRaining(false);
+      return;
+    }
+
+    // Start rain after 12 seconds
     const startTimer = setTimeout(() => {
       setIsRaining(true);
-      // Notify App that rain has started - scroll can now be enabled
       if (onRainStart) onRainStart();
 
+      // Stop after 15s duration (optional, but requested previously)
       const stopTimer = setTimeout(() => {
         setIsRaining(false);
       }, 15000);
       return () => clearTimeout(stopTimer);
     }, 12000);
+
     return () => clearTimeout(startTimer);
-  }, [onRainStart]);
+  }, [section, onRainStart]);
 
   // Track if we have left the intro (to avoid running reverse anim on mount)
   const hasLeftIntro = useRef(false);
