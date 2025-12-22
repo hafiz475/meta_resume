@@ -9,6 +9,7 @@ import HudText from './HudText';
 import StoryText3D from './StoryText3D';
 import Birds from './Birds';
 import WeatherSystem from './WeatherSystem';
+import SoundManager from './SoundManager';
 import * as THREE from 'three';
 
 function SceneContent({ section, onRainStart, isLanding, isStoryDone }) {
@@ -299,7 +300,12 @@ function SceneContent({ section, onRainStart, isLanding, isStoryDone }) {
     camera.updateProjectionMatrix();
   }, [isMobile, camera]);
 
+  const soundRef = useRef();
+
   const triggerThunder = () => {
+    // Play Sound
+    if (soundRef.current) soundRef.current.playThunder();
+
     if (lightRef.current) {
       gsap.killTweensOf(lightRef.current);
       gsap.to(lightRef.current, {
@@ -316,6 +322,13 @@ function SceneContent({ section, onRainStart, isLanding, isStoryDone }) {
 
   return (
     <>
+      <SoundManager
+        ref={soundRef}
+        isRaining={isRaining}
+        showBirds={showBirds}
+        section={section}
+      />
+
       <Sky
         distance={450000}
         sunPosition={skyState.sunPosition}
