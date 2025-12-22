@@ -115,6 +115,45 @@ function SceneContent({ section, onRainStart, isLanding, isStoryDone }) {
     return () => clearTimeout(startTimer);
   }, [section, onRainStart]);
 
+  // Plane Rotation Loop (Sections 0 & 1)
+  useEffect(() => {
+    // Enable for both Scene 0 (Intro) and Scene 1 (Sunset)
+    if (section > 1) return;
+
+    const performRotation = () => {
+      if (!planeRef.current) return;
+      // Barrel Roll (Rotate around X axis because plane faces X)
+      gsap.to(planeRef.current.rotation, {
+        x: "+=" + (Math.PI * 2), // Full 360 spin
+        duration: 6,
+        ease: "power1.inOut"
+      });
+    };
+
+    let intervalId;
+    // Start after 12 seconds
+    const startTimer = setTimeout(() => {
+      performRotation();
+      // Repeat every 18 seconds (6s rotation + 12s wait)
+      intervalId = setInterval(performRotation, 18000);
+    }, 12000);
+
+    return () => {
+      clearTimeout(startTimer);
+      clearInterval(intervalId);
+
+      // Fix for "Stuck" plane: Kill tween AND smoothly rotate back to 0
+      if (planeRef.current) {
+        gsap.killTweensOf(planeRef.current.rotation);
+        gsap.to(planeRef.current.rotation, {
+          x: 0,
+          duration: 1, // Quick adjustment to level flight
+          ease: "power2.out"
+        });
+      }
+    };
+  }, [section]);
+
   // Track if we have left the intro (to avoid running reverse anim on mount)
   const hasLeftIntro = useRef(false);
 
