@@ -105,7 +105,7 @@ function SceneContent({ section, onRainStart, isLanding }) {
       gsap.to(sunPosObj, {
         x: 100,
         y: 0, // Horizon
-        z: -20,
+        z: 0, // Centered
         duration: 3,
         onUpdate: () => setSkyState(prev => ({
           ...prev,

@@ -1,71 +1,78 @@
-import { useFrame } from '@react-three/fiber';
-import { useRef, useMemo } from 'react';
+import { useFrame, useGraph } from '@react-three/fiber';
+import { useRef, useMemo, useEffect } from 'react';
 import * as THREE from 'three';
+import { useGLTF, useAnimations } from '@react-three/drei';
+import { SkeletonUtils } from 'three-stdlib';
 
-function Bird({ position, speed, factor, phase, scale }) {
-    const mesh = useRef();
+function Bird({ position, speed, factor, phase, scale, scene, animations }) {
+    const group = useRef();
+    // Clone the scene for each bird instance to allow independent animation
+    const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+    const { nodes } = useGraph(clone);
+    const { actions } = useAnimations(animations, group);
+
+    useEffect(() => {
+        // Play the first animation found
+        const actionNames = Object.keys(actions);
+        if (actionNames.length > 0) {
+            const action = actions[actionNames[0]];
+            action.reset().fadeIn(0.5).play();
+            // Randomize start time to desync animations
+            action.time = Math.random() * action.getClip().duration;
+        }
+    }, [actions]);
 
     useFrame((state, delta) => {
-        if (!mesh.current) return;
+        if (!group.current) return;
 
-        // Movement: Fly forward (+X)
-        mesh.current.position.x += speed * delta * 60;
-        mesh.current.position.y += Math.sin(state.clock.elapsedTime * factor + phase) * 0.01;
-        mesh.current.position.z += Math.cos(state.clock.elapsedTime * factor + phase) * 0.01;
-
-        // Wing flapping
-        const wingRotation = Math.sin(state.clock.elapsedTime * 15 * factor) * 0.8;
-        if (mesh.current.children[0]) mesh.current.children[0].rotation.z = -wingRotation; // Left
-        if (mesh.current.children[1]) mesh.current.children[1].rotation.z = wingRotation;  // Right
+        // Movement: Fly backward (-X)
+        group.current.position.x -= speed * delta * 60;
+        group.current.position.y += Math.sin(state.clock.elapsedTime * factor + phase) * 0.01;
+        group.current.position.z += Math.cos(state.clock.elapsedTime * factor + phase) * 0.01;
 
         // Loop back
-        if (mesh.current.position.x > 35) {
-            mesh.current.position.x = -35;
+        if (group.current.position.x < -35) {
+            group.current.position.x = 35;
+            // Randomize Y and Z slightly when reseting
+            group.current.position.y = -2 + Math.random() * 2; // Lower altitude
+            group.current.position.z = -4 - Math.random() * 6;
         }
     });
 
     return (
-        <group ref={mesh} position={position} scale={[scale, scale, scale]} rotation={[0, Math.PI / 2, 0]}>
-            {/* Left Wing */}
-            <mesh position={[-0.05, 0, 0.08]} rotation={[Math.PI / 2, 0, 0]}>
-                <planeGeometry args={[0.2, 0.1]} />
-                <meshStandardMaterial color="#111" side={THREE.DoubleSide} />
-            </mesh>
-            {/* Right Wing */}
-            <mesh position={[-0.05, 0, -0.08]} rotation={[Math.PI / 2, 0, 0]}>
-                <planeGeometry args={[0.2, 0.1]} />
-                <meshStandardMaterial color="#111" side={THREE.DoubleSide} />
-            </mesh>
-            {/* Body */}
-            <mesh position={[0, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
-                <coneGeometry args={[0.03, 0.2, 4]} />
-                <meshStandardMaterial color="#000" />
-            </mesh>
+        <group ref={group} position={position} dispose={null}>
+            <group rotation={[0, -Math.PI / 2, 0]} scale={[scale, scale, scale]}>
+                <primitive object={clone} />
+            </group>
         </group>
     );
 }
 
 export default function Birds() {
     const birdsCount = 10;
+    const { scene, animations } = useGLTF('/assets/models/low_poly_bird_animated.glb');
+
     const birds = useMemo(() => {
         return new Array(birdsCount).fill().map((_, i) => ({
             position: [
-                -25 - Math.random() * 15, // Start further back
-                0 + Math.random() * 2,   // Float height
-                -4 - Math.random() * 6   // Side distance
+                25 + Math.random() * 15,
+                -2 + Math.random() * 2,
+                -10 - Math.random() * 10   // Further left (Negative Z)
             ],
             speed: 0.12 + Math.random() * 0.08,
             factor: 0.6 + Math.random() * 0.4,
             phase: Math.random() * Math.PI,
-            scale: 0.7 + Math.random() * 0.4
+            scale: 0.05 + Math.random() * 0.03 // Adjusted scale for likely larger GLB model
         }));
     }, []);
 
     return (
         <group name="birds-flock">
             {birds.map((props, i) => (
-                <Bird key={i} {...props} />
+                <Bird key={i} {...props} scene={scene} animations={animations} />
             ))}
         </group>
     );
 }
+
+useGLTF.preload('/assets/models/low_poly_bird_animated.glb');
