@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import * as THREE from 'three';
 
-export default function CloudStream({ maxClouds = 20, onCloudClick, section = 0 }) {
+export default function CloudStream({ maxClouds = 20, onCloudClick, section = 0, active = true }) {
   const { scene } = useGLTF('/assets/models/cloud.glb');
   const group = useRef();
   const clouds = useRef([]);
@@ -72,7 +72,7 @@ export default function CloudStream({ maxClouds = 20, onCloudClick, section = 0 
     if (!group.current) return;
 
     // spawn new clouds if needed
-    if (clouds.current.length < maxClouds) {
+    if (active && clouds.current.length < maxClouds) {
       const cloud = spawnCloud();
       clouds.current.push(cloud);
       group.current.add(cloud.mesh);

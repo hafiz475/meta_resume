@@ -7,6 +7,7 @@ import Plane from './Plane';
 import CloudStream from './CloudStream';
 import HudText from './HudText';
 import StoryText3D from './StoryText3D';
+import Birds from './Birds';
 import WeatherSystem from './WeatherSystem';
 import * as THREE from 'three';
 
@@ -18,6 +19,8 @@ function SceneContent({ section, onRainStart, isLanding }) {
   const lightRef = useRef();
   const [shakeIntensity, setShakeIntensity] = useState(0);
   const [isRaining, setIsRaining] = useState(false);
+  const [showClouds, setShowClouds] = useState(true);
+  const [showBirds, setShowBirds] = useState(false);
 
   // Plane Ref for animation
   const planeRef = useRef();
@@ -132,6 +135,18 @@ function SceneContent({ section, onRainStart, isLanding }) {
         duration: 3,
         ease: "power2.inOut"
       }, "<");
+
+      // Stop clouds and show birds 6s after text appears (3.5s delay + 6s = 9.5s)
+      const transitionTimer = setTimeout(() => {
+        setShowClouds(false);
+        setShowBirds(true);
+      }, 9500);
+
+      return () => clearTimeout(transitionTimer);
+    } else {
+      // Reset transition for other sections
+      setShowClouds(true);
+      setShowBirds(false);
     }
 
   }, [section]);
@@ -206,7 +221,8 @@ function SceneContent({ section, onRainStart, isLanding }) {
       <directionalLight ref={lightRef} position={[5, 10, 5]} intensity={1.2} castShadow />
 
       <Suspense fallback={null}>
-        <CloudStream maxClouds={24} onCloudClick={triggerThunder} section={section} />
+        <CloudStream active={showClouds} maxClouds={24} onCloudClick={triggerThunder} section={section} />
+        {showBirds && <Birds />}
         <WeatherSystem active={isRaining} />
         <group ref={planeRef}>
           <Plane />
