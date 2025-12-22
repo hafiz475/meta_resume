@@ -6,7 +6,7 @@ import * as THREE from 'three';
 // Same font as HudText name display
 const CAVEAT_URL = "/assets/fonts/Caveat-Regular.ttf";
 
-export default function StoryText3D() {
+export default function StoryText3D({ isStoryDone }) {
     const { camera, size } = useThree();
     const groupRef = useRef();
 
@@ -14,7 +14,7 @@ export default function StoryText3D() {
     const animState = useRef(0);
     const [startAnim, setStartAnim] = useState(false);
 
-    // Start animation after camera settles (3 seconds delay)
+    // Start animation after camera settles (3.5 seconds delay)
     useEffect(() => {
         const timer = setTimeout(() => {
             setStartAnim(true);
@@ -27,7 +27,7 @@ export default function StoryText3D() {
 
         // Animate the state value from 0 to 1
         if (startAnim && animState.current < 1) {
-            animState.current += delta * 0.4; // Fade in over ~2.5 seconds
+            animState.current += delta * 0.4; // Fade in
             if (animState.current > 1) animState.current = 1;
         }
 
@@ -35,19 +35,20 @@ export default function StoryText3D() {
         groupRef.current.position.copy(camera.position);
         groupRef.current.quaternion.copy(camera.quaternion);
 
-        // Position: Center of screen
-        let targetX = 0;
-        let targetY = -0.3; // Previously -0.8. Moved UP but kept slightly below center (0).
-        let targetZ = -4;
+        // Position: MATCHING HUD TEXT (from HudText.jsx)
+        let targetX = 1.2;
+        let targetY = -0.6;
+        let targetZ = -3;
 
         // Mobile adjustments
         if (size.width < 768) {
-            targetY = -1.2;
+            targetX = 0.2;
+            targetY = -1.8;
             targetZ = -5;
         }
 
         // Start position (hidden below)
-        const startY = -3.0;
+        const startY = -4.0;
 
         // Ease out animation
         const t = animState.current;
@@ -59,90 +60,44 @@ export default function StoryText3D() {
         groupRef.current.translateZ(targetZ);
     });
 
-    // Shared text properties
-    const titleProps = {
+    const textProps = {
         font: CAVEAT_URL,
-        fontSize: 0.25,
-        lineHeight: 1,
+        fontSize: 0.15,
+        lineHeight: 1.2,
         letterSpacing: 0.02,
-        anchorX: "center",
+        anchorX: "center", // Center alignment for the group
         anchorY: "middle",
-    };
-
-    const bodyProps = {
-        font: CAVEAT_URL,
-        fontSize: 0.12,
-        lineHeight: 1.4,
-        letterSpacing: 0.01,
-        anchorX: "center",
-        anchorY: "middle",
-        maxWidth: 3.5,
         textAlign: "center",
     };
-
-    const highlightColor = "#FF6B35";  // Orange highlight
-    const textColor = "#ecf0f1";       // Cloud white
 
     return (
         <group ref={groupRef}>
             {/* Light to illuminate the text */}
             <pointLight position={[0, 1, 2]} intensity={2} distance={5} decay={2} color="#ffffff" />
 
-            {/* Main Title - Same style as name */}
-            <Text
-                {...titleProps}
-                fontSize={0.22}
-                position={[0, 0.7, 0]}
-            >
-                From Torque to TypeScript
-                <meshStandardMaterial
-                    color="#ffffff"
-                    roughness={0.5}
-                    metalness={0.2}
-                />
-            </Text>
-
-            {/* Paragraph 1 */}
-            <Text
-                {...bodyProps}
-                position={[0, 0.35, 0]}
-            >
-                Started as a Mechanical Engineer at Royal Enfield,
-                {"\n"}supervising 2,000 motorcycles daily. When Industry 4.0 arrived, I pivoted to code.
-                <meshStandardMaterial
-                    color="#ffffff"
-                    roughness={0.6}
-                    metalness={0.1}
-                />
-            </Text>
-
-            {/* Paragraph 2 */}
-            <Text
-                {...bodyProps}
-                position={[0, 0, 0]}
-            >
-                With zero background, I learned React JS,
-                {"\n"}built CarzMoto's billing system solo, and now at Bizmagnets,
-                {"\n"}I build WhatsApp CRM tools.
-                <meshStandardMaterial
-                    color="#ffffff"
-                    roughness={0.6}
-                    metalness={0.1}
-                />
-            </Text>
-
-            {/* Paragraph 3 */}
-            <Text
-                {...bodyProps}
-                position={[0, -0.35, 0]}
-            >
-                From tightening bolts at 72 Nm to debugging at 3 AM with Red Bull and sarcasm.
-                <meshStandardMaterial
-                    color="#ffffff"
-                    roughness={0.6}
-                    metalness={0.1}
-                />
-            </Text>
+            {!isStoryDone ? (
+                // --- PHASE 1: STORY ---
+                <group position={[0, 0, 0]}> {/* Local offsets relative to the HudText group position */}
+                    <Text {...textProps} fontSize={0.22} position={[0, 0.4, 0]}>
+                        From Torque to TypeScript
+                        <meshStandardMaterial color="#ffffff" roughness={0.5} metalness={0.2} />
+                    </Text>
+                    <Text {...textProps} position={[0, 0.1, 0]}>
+                        Started as a Mechanical Engineer at Royal Enfield
+                        <meshStandardMaterial color="#ffffff" roughness={0.6} metalness={0.1} />
+                    </Text>
+                    <Text {...textProps} position={[0, -0.1, 0]}>
+                        Now crafting WhatsApp CRM tools at Bizmagnets
+                        <meshStandardMaterial color="#ffffff" roughness={0.6} metalness={0.1} />
+                    </Text>
+                </group>
+            ) : (
+                // --- PHASE 2: HI ---
+                <Text font={CAVEAT_URL} fontSize={0.5} position={[0, 0, 0]} anchorX="center" anchorY="middle">
+                    Hi!
+                    <meshStandardMaterial color="#ffffff" roughness={0.5} metalness={0.2} />
+                </Text>
+            )}
         </group>
     );
 }

@@ -45,10 +45,11 @@ function App() {
 
       if (e.deltaY > 0) {
         // Can only scroll to section 1, not 2.
-        // If already at section 1, do NOT increment. User must click "Land".
+        // If already at section 1, only increment if story is done (Hi logic)
         setSection((s) => {
-          if (s < 1) setHasScrolled(true); // User moved past start
-          return s >= 1 ? 1 : Math.min(s + 1, maxSection);
+          if (s < 1) setHasScrolled(true);
+          if (s >= 1 && !isStoryDone) return 1; // Block until "Hi"
+          return Math.min(s + 1, maxSection);
         });
       } else {
         setSection((s) => Math.max(s - 1, 0));
@@ -60,7 +61,20 @@ function App() {
 
     window.addEventListener('wheel', onWheel, { passive: true });
     return () => window.removeEventListener('wheel', onWheel);
-  }, [canScroll, isLanding]);
+  }, [canScroll, isLanding, hasScrolled]); // Locked dependency removed to avoid stale closures
+
+  // Story Timing for Scene 2
+  const [isStoryDone, setIsStoryDone] = useState(false);
+  useEffect(() => {
+    if (section === 1) {
+      setIsStoryDone(false);
+      // 3.5s (enter delay) + 3s (read time) = 6.5s
+      const timer = setTimeout(() => setIsStoryDone(true), 6500);
+      return () => clearTimeout(timer);
+    } else {
+      setIsStoryDone(false);
+    }
+  }, [section]);
 
   return (
     <div className="app-container">
@@ -69,9 +83,10 @@ function App() {
           section={section}
           onRainStart={handleRainStart}
           isLanding={isLanding}
+          isStoryDone={isStoryDone}
         />
       </Suspense>
-      <Overlay section={section} onLand={handleLand} />
+      <Overlay section={section} onLand={handleLand} isStoryDone={isStoryDone} />
 
       {/* Scroll Prompt - section 0 only, and only if never scrolled before */}
       {canScroll && section === 0 && !hasScrolled && (

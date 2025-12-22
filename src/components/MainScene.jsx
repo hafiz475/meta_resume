@@ -11,7 +11,7 @@ import Birds from './Birds';
 import WeatherSystem from './WeatherSystem';
 import * as THREE from 'three';
 
-function SceneContent({ section, onRainStart, isLanding }) {
+function SceneContent({ section, onRainStart, isLanding, isStoryDone }) {
   const { camera, size } = useThree();
   const isMobile = size.width < 768;
 
@@ -276,7 +276,7 @@ function SceneContent({ section, onRainStart, isLanding }) {
           <Plane />
         </group>
         {section === 0 && <HudText />}
-        {section === 1 && <StoryText3D />}
+        {section === 1 && <StoryText3D isStoryDone={isStoryDone} />}
       </Suspense>
 
       <CameraShake
@@ -292,10 +292,10 @@ function SceneContent({ section, onRainStart, isLanding }) {
   );
 }
 
-export default function MainScene({ section, onRainStart, isLanding }) {
+export default function MainScene({ section, onRainStart, isLanding, isStoryDone }) {
   return (
     <Canvas camera={{ position: [0, 1.5, 6], fov: 45 }}>
-      <SceneContent section={section} onRainStart={onRainStart} isLanding={isLanding} />
+      <SceneContent section={section} onRainStart={onRainStart} isLanding={isLanding} isStoryDone={isStoryDone} />
     </Canvas>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const Overlay = ({ section, onLand }) => {
+const Overlay = ({ section, onLand, isStoryDone }) => {
     const [visible, setVisible] = useState(false);
     const [contentVisible, setContentVisible] = useState(false);
 
@@ -26,14 +26,14 @@ const Overlay = ({ section, onLand }) => {
         };
     }, [section]);
 
-    // Scene 2: Sunset Story - Only Land Button (text is now 3D in canvas)
+    // Scene 2: Sunset Story - Land Button appears when "Hi" appears (isStoryDone)
     if (section === 1) {
-        return (
+        return isStoryDone ? (
             <button className="land-button" onClick={onLand}>
                 <span className="land-icon">🛬</span>
                 <span>Land</span>
             </button>
-        );
+        ) : null;
     }
 
     // Scene 3: Skills - Centered, Same Name Font Style
