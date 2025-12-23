@@ -131,7 +131,7 @@
   button {
     background: transparent;
     color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: none;
     padding: 1.2rem 3.5rem;
     font-size: 1rem;
     cursor: pointer;
@@ -139,18 +139,110 @@
     text-transform: uppercase;
     transition: all 0.3s ease;
     position: relative;
-    overflow: hidden;
+    overflow: hidden; // Important for chasing lines
+
+    .btn-line {
+      position: absolute;
+      display: block;
+
+      &-top {
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #00f2ff);
+        animation: btn-line-top 2s linear infinite;
+      }
+
+      &-right {
+        top: -100%;
+        right: 0;
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(180deg, transparent, #00f2ff);
+        animation: btn-line-right 2s linear infinite;
+        animation-delay: 0.5s;
+      }
+
+      &-bottom {
+        bottom: 0;
+        right: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(270deg, transparent, #bc00ff);
+        animation: btn-line-bottom 2s linear infinite;
+        animation-delay: 1s;
+      }
+
+      &-left {
+        bottom: -100%;
+        left: 0;
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(360deg, transparent, #bc00ff);
+        animation: btn-line-left 2s linear infinite;
+        animation-delay: 1.5s;
+      }
+    }
 
     &:hover {
-      background: #fff;
-      color: #000;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
-      border-color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+      transform: scale(1.05);
+
+      .btn-line {
+        filter: brightness(1.5) drop-shadow(0 0 5px #00f2ff);
+      }
     }
 
     &:active {
       transform: scale(0.98);
     }
+  }
+}
+
+@keyframes btn-line-top {
+  0% {
+    left: -100%;
+  }
+
+  50%,
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes btn-line-right {
+  0% {
+    top: -100%;
+  }
+
+  50%,
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes btn-line-bottom {
+  0% {
+    right: -100%;
+  }
+
+  50%,
+  100% {
+    right: 100%;
+  }
+}
+
+@keyframes btn-line-left {
+  0% {
+    bottom: -100%;
+  }
+
+  50%,
+  100% {
+    bottom: 100%;
   }
 }
 

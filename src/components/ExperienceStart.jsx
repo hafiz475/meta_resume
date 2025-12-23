@@ -23,6 +23,10 @@ export default function ExperienceStart({ onStart }) {
                     </span>
                 </p>
                 <button onClick={onStart}>
+                    <span className="btn-line btn-line-top"></span>
+                    <span className="btn-line btn-line-right"></span>
+                    <span className="btn-line btn-line-bottom"></span>
+                    <span className="btn-line btn-line-left"></span>
                     Enter Cockpit
                 </button>
             </div>
