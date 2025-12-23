@@ -45,7 +45,7 @@ export default function HudText() {
 
         // Mobile Adjustments: Center and Below Plane
         if (size.width < 768) {
-            targetX = 0.2;   // Center horizontally (Offset for text alignment)
+            targetX = 0;   // Perfectly centered
             targetY = -1.8; // Lower down (below plane)
             targetZ = -5;  // Push back slightly
         }
@@ -83,7 +83,8 @@ export default function HudText() {
             <Text
                 {...textProps}
                 fontSize={0.5}
-                position={[-0.5, 0.1, 0]}
+                position={[0, 0.1, 0]} // Center within the group
+                anchorX="center"
             >
                 Hi!
                 <meshStandardMaterial

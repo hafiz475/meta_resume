@@ -69,8 +69,8 @@ export default function StoryText3D({ isStoryDone }) {
 
         // Mobile adjustments
         if (size.width < 768) {
-            targetX = 0.2;
-            targetY = -1.8;
+            targetX = 0;   // Centered
+            targetY = -2.2; // Further below
             targetZ = -5;
         }
 
@@ -87,12 +87,14 @@ export default function StoryText3D({ isStoryDone }) {
         groupRef.current.translateZ(targetZ);
     });
 
+    const isMobileUI = size.width < 768;
+
     const textProps = {
         font: CAVEAT_URL,
         fontSize: 0.15,
         lineHeight: 1.2,
         letterSpacing: 0.02,
-        anchorX: "center", // Center alignment for the group
+        anchorX: "center",
         anchorY: "middle",
         textAlign: "center",
     };
@@ -103,14 +105,13 @@ export default function StoryText3D({ isStoryDone }) {
             <pointLight position={[0, 1, 2]} intensity={2} distance={5} decay={2} color="#ffffff" />
 
             {/* --- PHASE 1: NAME (Initially Visible) --- */}
-            {/* --- PHASE 1: NAME (Initially Visible) --- */}
             <group position={[0, 0, 0]}>
                 {/* "I'm" - Smaller, lighter, aligned left above name */}
                 <Text
                     font={CAVEAT_URL}
                     fontSize={0.18}
-                    position={[-1.7, 0.25, 0]}
-                    anchorX="left"
+                    position={[isMobileUI ? 0 : -1.7, 0.25, 0]}
+                    anchorX={isMobileUI ? "center" : "left"}
                     anchorY="middle"
                 >
                     I'm
@@ -121,8 +122,8 @@ export default function StoryText3D({ isStoryDone }) {
                 <Text
                     font={CAVEAT_URL}
                     fontSize={0.3}
-                    position={[-1.7, 0, 0]}
-                    anchorX="left"
+                    position={[isMobileUI ? 0 : -1.7, 0, 0]}
+                    anchorX={isMobileUI ? "center" : "left"}
                     anchorY="middle"
                 >
                     J Md Hafizur Rahman

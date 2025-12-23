@@ -188,9 +188,9 @@ function SceneContent({ section, onRainStart, isLanding, isStoryDone, hasStarted
       // y: negative = below
       // z: positive = to the side (under left wing)
       tl.to(camera.position, {
-        x: -4,    // Further behind the plane
-        y: -0.8,  // Below wing level
-        z: 2.5,   // Under left wing
+        x: isMobile ? -3.5 : -4,
+        y: isMobile ? -0.5 : -0.8,
+        z: isMobile ? 1.2 : 2.5,
         duration: 3,
         ease: "power2.inOut"
       });
