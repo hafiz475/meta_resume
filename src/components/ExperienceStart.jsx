@@ -23,11 +23,11 @@ export default function ExperienceStart({ onStart }) {
             }
         });
 
-        // 1. Content fades/shrinks slowly (Cinematic 2s)
+        // 1. Content fades/shrinks slowly (Cinematic 1s)
         tl.to('.start-content', {
             opacity: 0,
             scale: 0.9,
-            duration: 2,
+            duration: 1,
             ease: "power2.inOut"
         });
 
@@ -38,6 +38,7 @@ export default function ExperienceStart({ onStart }) {
             duration: 2,
             stagger: {
                 amount: 0.5,
+                grid: [rows, cols],
                 from: "center"
             },
             ease: "power3.out"
