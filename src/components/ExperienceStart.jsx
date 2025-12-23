@@ -33,9 +33,6 @@ export default function ExperienceStart({ onStart }) {
 
         // 2. Explode Particles (Happens after content fades)
         tl.to('.bg-particle', {
-            x: () => (Math.random() - 0.5) * window.innerWidth * 1.5,
-            y: () => (Math.random() - 0.5) * window.innerHeight * 1.5,
-            rotation: () => Math.random() * 360,
             scale: 0,
             opacity: 0,
             duration: 2,
