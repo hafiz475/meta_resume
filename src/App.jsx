@@ -82,18 +82,21 @@ function App() {
 
   return (
     <div className="app-container">
-      {!hasStarted ? (
+      <Suspense fallback={null}>
+        <MainScene
+          section={section}
+          onRainStart={handleRainStart}
+          isLanding={isLanding}
+          isStoryDone={isStoryDone}
+        />
+      </Suspense>
+
+      {!hasStarted && (
         <ExperienceStart onStart={() => setHasStarted(true)} />
-      ) : (
+      )}
+
+      {hasStarted && (
         <>
-          <Suspense fallback={null}>
-            <MainScene
-              section={section}
-              onRainStart={handleRainStart}
-              isLanding={isLanding}
-              isStoryDone={isStoryDone}
-            />
-          </Suspense>
           <Overlay section={section} onLand={handleLand} isStoryDone={isStoryDone} />
 
           {/* Scroll Prompt - section 0 only, and only if never scrolled before */}

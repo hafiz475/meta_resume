@@ -1,10 +1,61 @@
+import { useState, useRef, useEffect } from 'react';
+import gsap from 'gsap';
 import './ExperienceStart.scss';
 
 export default function ExperienceStart({ onStart }) {
     const tagline = "BORN TO BUILD. FORGED IN CODE.";
+    const [isExiting, setIsExiting] = useState(false);
+    const containerRef = useRef();
+
+    // Generate grid for particles
+    const rows = 12;
+    const cols = 20;
+    const totalParticles = rows * cols;
+    const particles = Array.from({ length: totalParticles });
+
+    const handleEnter = () => {
+        setIsExiting(true);
+
+        // Final Exit Animation
+        const tl = gsap.timeline({
+            onComplete: () => {
+                onStart(); // Proceed to next scene
+            }
+        });
+
+        // 1. Content fades/shrinks slowly (Cinematic 2s)
+        tl.to('.start-content', {
+            opacity: 0,
+            scale: 0.9,
+            duration: 2,
+            ease: "power2.inOut"
+        });
+
+        // 2. Explode Particles (Happens after content fades)
+        tl.to('.bg-particle', {
+            x: () => (Math.random() - 0.5) * window.innerWidth * 1.5,
+            y: () => (Math.random() - 0.5) * window.innerHeight * 1.5,
+            rotation: () => Math.random() * 360,
+            scale: 0,
+            opacity: 0,
+            duration: 2,
+            stagger: {
+                amount: 0.5,
+                from: "center"
+            },
+            ease: "power3.out"
+        }, "-=0.5"); // Slight overlap for smoothness, but mostly after
+    };
 
     return (
-        <div className="experience-start">
+        <div className={`experience-start ${isExiting ? 'exiting' : ''}`} ref={containerRef}>
+            {/* Particle Grid */}
+            <div className="particle-container">
+                {particles.map((_, i) => (
+                    <div key={i} className="bg-particle" />
+                ))}
+            </div>
+
             <div className="start-content">
                 <h1 className="animated-tagline">
                     {tagline.split("").map((char, index) => (
@@ -22,7 +73,7 @@ export default function ExperienceStart({ onStart }) {
                         <span></span>
                     </span>
                 </p>
-                <button onClick={onStart}>
+                <button onClick={handleEnter}>
                     <span className="btn-line btn-line-top"></span>
                     <span className="btn-line btn-line-right"></span>
                     <span className="btn-line btn-line-bottom"></span>
