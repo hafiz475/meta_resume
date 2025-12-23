@@ -57,9 +57,15 @@ export default function ExperienceStart({ onStart, onExitComplete }) {
 
             <div className="start-content">
                 <h1 className="animated-tagline">
-                    {tagline.split("").map((char, index) => (
-                        <span key={index} className="char">
-                            {char === " " ? "\u00A0" : char}
+                    {tagline.split(" ").map((word, wordIndex) => (
+                        <span key={wordIndex} className="word" style={{ whiteSpace: 'nowrap', display: 'inline-block' }}>
+                            {word.split("").map((char, charIndex) => (
+                                <span key={charIndex} className="char">
+                                    {char}
+                                </span>
+                            ))}
+                            {/* Add a space after each word except the last one */}
+                            {wordIndex < tagline.split(" ").length - 1 && "\u00A0"}
                         </span>
                     ))}
                 </h1>
