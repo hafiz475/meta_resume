@@ -130,7 +130,11 @@
 
   button {
     background: transparent;
-    color: #fff;
+    background: linear-gradient(90deg, #00f2ff, #ff0000);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
     border: none;
     padding: 1.2rem 3.5rem;
     font-size: 1rem;
@@ -186,20 +190,14 @@
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      // Dual glow matching the theme
-      box-shadow:
-        0 0 15px rgba(0, 242, 255, 0.4),
-        0 0 30px rgba(255, 0, 0, 0.3);
-      transform: scale(1.05);
+      transform: scale(1.1); // "Grow" effect
 
       .btn-line {
-        filter: brightness(1.8) drop-shadow(0 0 8px #00f2ff);
+        filter: brightness(2) drop-shadow(0 0 8px #00f2ff);
 
         &-bottom,
         &-left {
-          filter: brightness(1.8) drop-shadow(0 0 8px #ff0000);
+          filter: brightness(2) drop-shadow(0 0 8px #ff0000);
         }
       }
     }
