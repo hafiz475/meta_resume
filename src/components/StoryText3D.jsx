@@ -96,9 +96,9 @@ export default function StoryText3D({ isStoryDone }) {
         fontSize: isNarrowUI ? 0.13 : 0.15, // Slightly smaller for tablets/mobile
         lineHeight: 1.2,
         letterSpacing: 0.02,
-        anchorX: "center",
+        anchorX: isNarrowUI ? "center" : "left",
         anchorY: "middle",
-        textAlign: "center",
+        textAlign: isNarrowUI ? "center" : "left",
     };
 
     return (
@@ -135,15 +135,15 @@ export default function StoryText3D({ isStoryDone }) {
 
             {/* --- PHASE 2: BIO (Visible after 6s) --- */}
             <group position={[0, 0, 0]}>
-                <Text {...textProps} fontSize={0.22} position={[0, 0.4, 0]}>
+                <Text {...textProps} fontSize={0.22} position={[isNarrowUI ? 0 : -1.7, 0.4, 0]}>
                     From Torque to TypeScript
-                    <meshStandardMaterial ref={hiMat} transparent opacity={0} color="#ffffff" roughness={0.5} metalness={0.2} />
+                    <meshStandardMaterial ref={hiMat} transparent opacity={0} color="#bdc3c7" roughness={0.5} metalness={0.2} />
                 </Text>
-                <Text {...textProps} position={[0, 0.1, 0]}>
+                <Text {...textProps} position={[isNarrowUI ? 0 : -1.7, 0.1, 0]}>
                     Started as a Mechanical Engineer at Royal Enfield
                     <meshStandardMaterial ref={storyMat2} transparent opacity={0} color="#ffffff" roughness={0.6} metalness={0.1} />
                 </Text>
-                <Text {...textProps} position={[0, -0.1, 0]}>
+                <Text {...textProps} position={[isNarrowUI ? 0 : -1.7, -0.1, 0]}>
                     Now crafting WhatsApp CRM tools at Bizmagnets
                     <meshStandardMaterial ref={storyMat3} transparent opacity={0} color="#ffffff" roughness={0.6} metalness={0.1} />
                 </Text>
