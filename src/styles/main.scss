@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'AppInterBold';
+    src: url('/assets/fonts/Inter-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Caveat';
+    src: url('/assets/fonts/Caveat-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html,
 body,
 #root {
@@ -67,10 +81,9 @@ canvas {
 }
 
 .name-text {
-    font-family: 'Inter', sans-serif;
+    font-family: 'AppInterBold', sans-serif;
     font-size: 2.2rem;
-    /* Balanced size */
-    font-weight: 800;
+    font-weight: 700;
     font-style: italic;
     letter-spacing: -0.01rem;
     margin: 0;

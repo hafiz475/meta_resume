@@ -13,7 +13,15 @@ export default function ExperienceStart({ onStart }) {
                         </span>
                     ))}
                 </h1>
-                <p>Immersive Audio Experience Ready</p>
+                <p className="music-tagline">
+                    Immersive Audio Experience Ready
+                    <span className="sound-waves">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </p>
                 <button onClick={onStart}>
                     Enter Cockpit
                 </button>
