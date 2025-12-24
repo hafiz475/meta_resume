@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 const Overlay = ({ section, onLand, isStoryDone }) => {
     const [visible, setVisible] = useState(false);
     const [contentVisible, setContentVisible] = useState(false);
+    const [landButtonVisible, setLandButtonVisible] = useState(false);
 
     useEffect(() => {
         setVisible(false);
@@ -26,9 +27,22 @@ const Overlay = ({ section, onLand, isStoryDone }) => {
         };
     }, [section]);
 
-    // Scene 2: Sunset Story - Land Button appears when "Hi" appears (isStoryDone)
+    // Show Land button after 6 seconds when isStoryDone becomes true in section 1
+    useEffect(() => {
+        if (section === 1 && isStoryDone) {
+            const landButtonTimer = setTimeout(() => {
+                setLandButtonVisible(true);
+            }, 6000); // 6 second delay
+
+            return () => clearTimeout(landButtonTimer);
+        } else {
+            setLandButtonVisible(false);
+        }
+    }, [section, isStoryDone]);
+
+    // Scene 2: Sunset Story - Land Button appears 6 seconds after "Hi" appears (isStoryDone)
     if (section === 1) {
-        return isStoryDone ? (
+        return landButtonVisible ? (
             <button className="land-button" onClick={onLand}>
                 <span className="land-icon">🛬</span>
                 <span>Land</span>
