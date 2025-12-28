@@ -1,5 +1,16 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import Lottie from 'lottie-react';
 import '../styles/star-journey.scss';
+
+// Tech stack Lotties for the finale
+const techStack = [
+    { name: 'React', path: '/assets/lotties/react.json', delay: 0 },
+    { name: 'Node', path: '/assets/lotties/node.json', delay: 0.5 },
+    { name: 'MongoDB', path: '/assets/lotties/mongodb.json', delay: 1 },
+    { name: 'Firebase', path: '/assets/lotties/firebase.json', delay: 1.5 },
+    { name: 'AWS', path: '/assets/lotties/aws.json', delay: 2 },
+    { name: 'WhatsApp', path: '/assets/lotties/whatsapp loop.json', delay: 2.5 },
+];
 
 // Life story sections data
 const journeySections = [
@@ -80,6 +91,9 @@ export default function StarJourney({ onBack }) {
     const [scrollProgress, setScrollProgress] = useState(0);
     const [activeSection, setActiveSection] = useState(0);
     const [isScrolling, setIsScrolling] = useState(false);
+    const [techLotties, setTechLotties] = useState({});
+    const [spaceBoyLottie, setSpaceBoyLottie] = useState(null);
+    const [heartLottie, setHeartLottie] = useState(null);
 
     // Generate star layers once
     const stars = useMemo(() => ({
@@ -87,6 +101,32 @@ export default function StarJourney({ onBack }) {
         mid: generateStars(100, 'mid'),
         near: generateStars(50, 'near')
     }), []);
+
+    // Load Lottie animations
+    useEffect(() => {
+        // Load tech stack Lotties
+        techStack.forEach(async (tech) => {
+            try {
+                const response = await fetch(tech.path);
+                const data = await response.json();
+                setTechLotties(prev => ({ ...prev, [tech.name]: data }));
+            } catch (err) {
+                console.log(`Failed to load ${tech.name} lottie`);
+            }
+        });
+
+        // Load space boy lottie
+        fetch('/assets/lotties/space boy developer (1).json')
+            .then(res => res.json())
+            .then(data => setSpaceBoyLottie(data))
+            .catch(() => console.log('Failed to load space boy lottie'));
+
+        // Load heart lottie
+        fetch('/assets/lotties/heart.json')
+            .then(res => res.json())
+            .then(data => setHeartLottie(data))
+            .catch(() => console.log('Failed to load heart lottie'));
+    }, []);
 
     // Handle scroll
     useEffect(() => {
@@ -261,11 +301,75 @@ export default function StarJourney({ onBack }) {
                         );
                     })}
 
-                    {/* Outro spacer */}
+                    {/* Outro spacer - Enhanced Finale */}
                     <div className="journey-spacer outro">
-                        <div className="journey-end">
-                            <h2>The Journey Continues...</h2>
-                            <p>Thanks for traveling with me ✨</p>
+                        <div className="journey-end-enhanced">
+                            {/* Orbiting Tech Stack */}
+                            <div className="tech-orbit-container">
+                                {techStack.map((tech, index) => (
+                                    techLotties[tech.name] && (
+                                        <div
+                                            key={tech.name}
+                                            className="tech-orbit-item"
+                                            style={{
+                                                '--orbit-index': index,
+                                                '--orbit-delay': `${tech.delay}s`,
+                                                '--orbit-total': techStack.length
+                                            }}
+                                        >
+                                            <Lottie
+                                                animationData={techLotties[tech.name]}
+                                                loop
+                                                className="tech-lottie"
+                                            />
+                                            <span className="tech-label">{tech.name}</span>
+                                        </div>
+                                    )
+                                ))}
+                            </div>
+
+                            {/* Center Hero - Space Developer */}
+                            <div className="hero-lottie-container">
+                                {spaceBoyLottie && (
+                                    <Lottie
+                                        animationData={spaceBoyLottie}
+                                        loop
+                                        className="hero-lottie"
+                                    />
+                                )}
+                            </div>
+
+                            {/* Message with Heart */}
+                            <div className="finale-message">
+                                <h2>The Journey Continues...</h2>
+                                <div className="thanks-row">
+                                    <p>Thanks for traveling with me</p>
+                                    {heartLottie && (
+                                        <Lottie
+                                            animationData={heartLottie}
+                                            loop
+                                            className="heart-lottie"
+                                        />
+                                    )}
+                                </div>
+                                <p className="cta-text">Let's build something amazing together</p>
+                            </div>
+
+                            {/* Sparkle particles */}
+                            <div className="sparkle-container">
+                                {Array.from({ length: 20 }).map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className="sparkle"
+                                        style={{
+                                            '--sparkle-x': `${Math.random() * 100}%`,
+                                            '--sparkle-y': `${Math.random() * 100}%`,
+                                            '--sparkle-delay': `${Math.random() * 3}s`,
+                                            '--sparkle-size': `${2 + Math.random() * 4}px`
+                                        }}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
